@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
+using System; 
 
 
 //TODO: Make the program manually set the values for us to test with
@@ -9,7 +9,7 @@ using System;
 public class GameController2048 : MonoBehaviour
 {
     public static GameController2048 instance;
-    public static int ticker;
+    public static int ticker; 
 
     [SerializeField] GameObject fillPrefab;
     [SerializeField] Transform[] allCells;
@@ -18,7 +18,7 @@ public class GameController2048 : MonoBehaviour
     {
         if (instance == null)
         {
-            instance = this;
+            instance = this; 
         }
     }
 
@@ -32,7 +32,7 @@ public class GameController2048 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Space))
         {
             SpawnFill();
         }
@@ -64,14 +64,14 @@ public class GameController2048 : MonoBehaviour
     public void SpawnFill()
     {
         int whichSpawn = UnityEngine.Random.Range(0, allCells.Length);
-        if (allCells[whichSpawn].childCount != 0)
+        if(allCells[whichSpawn].childCount != 0)
         {
             Debug.Log(allCells[whichSpawn].name + " is already filled");
             SpawnFill();
-            return;
+            return; 
         }
         float chance = UnityEngine.Random.Range(0f, 1f);
-        Debug.Log("The random number was " + chance);
+        Debug.Log("The random number was "+chance);
         /*if (chance < .2f)
         {
             return;
@@ -90,8 +90,8 @@ public class GameController2048 : MonoBehaviour
             GameObject tempFill = Instantiate(fillPrefab, allCells[whichSpawn]);
             Debug.Log("Becuase the random number was " + chance + " we spawned a 4");
             Fill2048 tempFillComp = tempFill.GetComponent<Fill2048>();
-            allCells[whichSpawn].GetComponent<Cell2048>().fill = tempFillComp;
-            tempFillComp.FillValueUpdate(4);
+            allCells[whichSpawn].GetComponent<Cell2048>().fill = tempFillComp; 
+            tempFillComp.FillValueUpdate(4); 
         }
     }
 
@@ -104,7 +104,7 @@ public class GameController2048 : MonoBehaviour
         allCells[8].GetComponent<Cell2048>().fill = tempFillComp;
         tempFillComp.FillValueUpdate(4);
 
-        GameObject tempFill2 = Instantiate(fillPrefab, allCells[12]);
+        GameObject tempFill2 = Instantiate(fillPrefab, allCells[12]);   
         Fill2048 tempFillComp2 = tempFill2.GetComponent<Fill2048>();
         allCells[12].GetComponent<Cell2048>().fill = tempFillComp2;
         tempFillComp2.FillValueUpdate(2);
@@ -119,11 +119,11 @@ public class GameController2048 : MonoBehaviour
             SpawnFill();
             return;
         }
-        GameObject tempFill = Instantiate(fillPrefab, allCells[whichSpawn]);
-        Debug.Log(2);
-        Fill2048 tempFillComp = tempFill.GetComponent<Fill2048>();
-        allCells[whichSpawn].GetComponent<Cell2048>().fill = tempFillComp;
-        tempFillComp.FillValueUpdate(2);
+            GameObject tempFill = Instantiate(fillPrefab, allCells[whichSpawn]);
+            Debug.Log(2);
+            Fill2048 tempFillComp = tempFill.GetComponent<Fill2048>();
+            allCells[whichSpawn].GetComponent<Cell2048>().fill = tempFillComp;
+            tempFillComp.FillValueUpdate(2);       
     }
     private void SlideUp(Cell2048 headValue)
     {
@@ -132,49 +132,24 @@ public class GameController2048 : MonoBehaviour
         //Cell2048 headValue = head.GetComponent(typeof(Cell2048)) as Cell2048;
 
 
-        /*if (headValue.fill == null)
-        {
-            //Do stuff
-        }
-        else
-        {
-            //Do other stuff
-            Debug.Log("The value is " + headValue.fill.value);
-            //headValue.fill.removeFromBoard();
-        }
-        */
-
         if (headValue.fill == null)
         {
             //TODO - this is probably the problem
             Cell2048 currentCell = (headValue.GetComponent(typeof(Cell2048)) as Cell2048).down; //The cell below it
-            while (currentCell.fill == null && currentCell.down != null)
+            while(currentCell.fill == null && currentCell.down != null)
             {
                 currentCell = currentCell.down;
             }
             if (currentCell != null)
             {
-                if (headValue.fill.value == currentCell.fill.value)
-                {
-                    currentCell.fill.Double();
-                    currentCell.fill.transform.parent = headValue.transform;
-                    headValue.fill = currentCell.fill;
-                    currentCell.fill = null;
-                }
-                else if (headValue.down.fill != currentCell.fill)
-                {
-                    Debug.Log("!Doubled");
-                    currentCell.fill.transform.parent = headValue.down.transform;
-                    headValue.down.fill = currentCell.fill;
-                    currentCell.fill = null;
-                }
-                /*Debug.Log("Attempting to change to " + currentCell.fill.value);
+                Debug.Log("Attempting to change to " + currentCell.fill.value);
                 headValue.fill = makeCell(currentCell.fill.value, headValue.postionInArray);
                 headValue.fill.FillValueUpdate(currentCell.fill.value);
-                currentCell.fill.removeFromBoard();*/
+                currentCell.fill.removeFromBoard();
+                currentCell.fill = null;
             }
         }
-        SlideUp(headValue.down);
+        SlideUp((headValue.GetComponent(typeof(Cell2048)) as Cell2048).down);
 
 
     }

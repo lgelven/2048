@@ -102,7 +102,7 @@ public class GameController2048 : MonoBehaviour
         GameObject tempFill = Instantiate(fillPrefab, allCells[8]);
         Fill2048 tempFillComp = tempFill.GetComponent<Fill2048>();
         allCells[8].GetComponent<Cell2048>().fill = tempFillComp;
-        tempFillComp.FillValueUpdate(4);
+        tempFillComp.FillValueUpdate(2);
 
         GameObject tempFill2 = Instantiate(fillPrefab, allCells[12]);   
         Fill2048 tempFillComp2 = tempFill2.GetComponent<Fill2048>();
@@ -112,7 +112,12 @@ public class GameController2048 : MonoBehaviour
         GameObject tempFill3 = Instantiate(fillPrefab, allCells[4]);
         Fill2048 tempFillComp3 = tempFill3.GetComponent<Fill2048>();
         allCells[4].GetComponent<Cell2048>().fill = tempFillComp3;
-        tempFillComp3.FillValueUpdate(3); 
+        tempFillComp3.FillValueUpdate(4);
+
+        GameObject tempFill4 = Instantiate(fillPrefab, allCells[0]);
+        Fill2048 tempFillComp4 = tempFill4.GetComponent<Fill2048>();
+        allCells[0].GetComponent<Cell2048>().fill = tempFillComp4;
+        tempFillComp4.FillValueUpdate(4);
     }
     public void StartSpawnFill()
     {
@@ -134,17 +139,15 @@ public class GameController2048 : MonoBehaviour
         //Fill2048 value = (head.GetComponent(typeof(Cell2048)) as Cell2048).fill; //The number of our current cell
         //Cell2048 currentValue = head.GetComponent(typeof(Cell2048)) as Cell2048;
         //Cell2048 headValue = head.GetComponent(typeof(Cell2048)) as Cell2048;
-
-
         if (headValue.fill == null)
         {
-            //TODO - this is probably the problem
+            //Slides up values
             Cell2048 currentCell = (headValue.GetComponent(typeof(Cell2048)) as Cell2048).down; //The cell below it
-            while(currentCell.fill == null && currentCell.down != null)
+            while (currentCell.fill == null && currentCell.down != null)
             {
                 currentCell = currentCell.down;
             }
-            if (currentCell != null)
+            if (currentCell != null && currentCell.fill != null)
             {
                 Debug.Log("Attempting to change to " + currentCell.fill.value);
                 headValue.fill = makeCell(currentCell.fill.value, headValue.postionInArray);
@@ -153,8 +156,30 @@ public class GameController2048 : MonoBehaviour
                 currentCell.fill = null;
             }
         }
-        SlideUp((headValue.GetComponent(typeof(Cell2048)) as Cell2048).down);
 
+        if (headValue.fill != null)
+        {
+            //Combines values
+            Cell2048 currentCell = (headValue.GetComponent(typeof(Cell2048)) as Cell2048).down; //The cell below it
+            while (currentCell.fill == null && currentCell.down != null)
+            {
+                currentCell = currentCell.down;
+            }
+            if (headValue.fill.value == currentCell.fill.value)
+            {
+                headValue.fill.Double();
+                headValue.fill.FillValueUpdate(headValue.fill.value);
+                currentCell.fill.removeFromBoard();
+                currentCell.fill = null;
+
+            }
+        }
+        if((headValue.GetComponent(typeof(Cell2048)) as Cell2048).down.down != null)
+        {
+            SlideUp((headValue.GetComponent(typeof(Cell2048)) as Cell2048).down);
+        }
+        
+        
 
     }
     public Fill2048 makeCell(int valueToFill, int positionInGrid)

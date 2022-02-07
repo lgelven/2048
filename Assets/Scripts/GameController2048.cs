@@ -39,9 +39,9 @@ public class GameController2048 : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
         {
             SlideUp(allCells[0].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in
-            //SlideUp(allCells[1]); //Pass the top left cell in
-            //SlideUp(allCells[2]); //Pass the top left cell in
-            //SlideUp(allCells[3]); //Pass the top left cell in
+            SlideUp(allCells[1].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in
+            SlideUp(allCells[2].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in
+            SlideUp(allCells[3].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in
 
         }
         if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
@@ -97,27 +97,17 @@ public class GameController2048 : MonoBehaviour
 
     public void DebugSpawnFill()
     {
-
-
-        GameObject tempFill = Instantiate(fillPrefab, allCells[8]);
+        spawnFillAt(0, 4);
+        spawnFillAt(4, 4);
+        spawnFillAt(8, 4);
+        spawnFillAt(12, 4);
+    }
+    public void spawnFillAt(int position, int value )
+    {
+        GameObject tempFill = Instantiate(fillPrefab, allCells[position]);
         Fill2048 tempFillComp = tempFill.GetComponent<Fill2048>();
-        allCells[8].GetComponent<Cell2048>().fill = tempFillComp;
-        tempFillComp.FillValueUpdate(2);
-
-        GameObject tempFill2 = Instantiate(fillPrefab, allCells[12]);   
-        Fill2048 tempFillComp2 = tempFill2.GetComponent<Fill2048>();
-        allCells[12].GetComponent<Cell2048>().fill = tempFillComp2;
-        tempFillComp2.FillValueUpdate(2);
-
-        GameObject tempFill3 = Instantiate(fillPrefab, allCells[4]);
-        Fill2048 tempFillComp3 = tempFill3.GetComponent<Fill2048>();
-        allCells[4].GetComponent<Cell2048>().fill = tempFillComp3;
-        tempFillComp3.FillValueUpdate(4);
-
-        GameObject tempFill4 = Instantiate(fillPrefab, allCells[0]);
-        Fill2048 tempFillComp4 = tempFill4.GetComponent<Fill2048>();
-        allCells[0].GetComponent<Cell2048>().fill = tempFillComp4;
-        tempFillComp4.FillValueUpdate(4);
+        allCells[position].GetComponent<Cell2048>().fill = tempFillComp;
+        tempFillComp.FillValueUpdate(value);
     }
     public void StartSpawnFill()
     {
@@ -178,9 +168,6 @@ public class GameController2048 : MonoBehaviour
         {
             SlideUp((headValue.GetComponent(typeof(Cell2048)) as Cell2048).down);
         }
-        
-        
-
     }
     public Fill2048 makeCell(int valueToFill, int positionInGrid)
     {

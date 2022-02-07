@@ -25,8 +25,8 @@ public class GameController2048 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //StartSpawnFill();
-        //StartSpawnFill();
+        StartSpawnFill();
+        StartSpawnFill();
     }
 
     // Update is called once per frame
@@ -46,15 +46,24 @@ public class GameController2048 : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
         {
-            //
+            SlideRight(allCells[3].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in
+            SlideRight(allCells[7].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in
+            SlideRight(allCells[11].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in
+            SlideRight(allCells[15].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in 
         }
         if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
         {
-            //
+            SlideDown(allCells[12].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in
+            SlideDown(allCells[13].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in
+            SlideDown(allCells[14].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in
+            SlideDown(allCells[15].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in 
         }
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            //
+            SlideLeft(allCells[0].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in
+            SlideLeft(allCells[4].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in
+            SlideLeft(allCells[8].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in
+            SlideLeft(allCells[12].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in 
         }
         if (Input.GetKeyDown(KeyCode.Tab))
         {
@@ -97,7 +106,7 @@ public class GameController2048 : MonoBehaviour
 
     public void DebugSpawnFill()
     {
-        spawnFillAt(0, 4);
+        spawnFillAt(0, 2);
         spawnFillAt(4, 4);
         spawnFillAt(8, 4);
         spawnFillAt(12, 4);
@@ -155,18 +164,171 @@ public class GameController2048 : MonoBehaviour
             {
                 currentCell = currentCell.down;
             }
-            if (headValue.fill.value == currentCell.fill.value)
+            if (currentCell.fill != null)
             {
-                headValue.fill.Double();
-                headValue.fill.FillValueUpdate(headValue.fill.value);
-                currentCell.fill.removeFromBoard();
-                currentCell.fill = null;
+                if (headValue.fill.value == currentCell.fill.value)
+                {
+                    headValue.fill.Double();
+                    headValue.fill.FillValueUpdate(headValue.fill.value);
+                    currentCell.fill.removeFromBoard();
+                    currentCell.fill = null;
 
+                }
             }
+            
         }
         if((headValue.GetComponent(typeof(Cell2048)) as Cell2048).down.down != null)
         {
             SlideUp((headValue.GetComponent(typeof(Cell2048)) as Cell2048).down);
+        }
+    }
+    private void SlideRight(Cell2048 headValue)
+    {
+        //Fill2048 value = (head.GetComponent(typeof(Cell2048)) as Cell2048).fill; //The number of our current cell
+        //Cell2048 currentValue = head.GetComponent(typeof(Cell2048)) as Cell2048;
+        //Cell2048 headValue = head.GetComponent(typeof(Cell2048)) as Cell2048;
+        if (headValue.fill == null)
+        {
+            //Slides up values
+            Cell2048 currentCell = (headValue.GetComponent(typeof(Cell2048)) as Cell2048).left; //The cell below it
+            while (currentCell.fill == null && currentCell.left != null)
+            {
+                currentCell = currentCell.left;
+            }
+            if (currentCell != null && currentCell.fill != null)
+            {
+                Debug.Log("Attempting to change to " + currentCell.fill.value);
+                headValue.fill = makeCell(currentCell.fill.value, headValue.postionInArray);
+                headValue.fill.FillValueUpdate(currentCell.fill.value);
+                currentCell.fill.removeFromBoard();
+                currentCell.fill = null;
+            }
+        }
+
+        if (headValue.fill != null)
+        {
+            //Combines values
+            Cell2048 currentCell = (headValue.GetComponent(typeof(Cell2048)) as Cell2048).left; //The cell below it
+            while (currentCell.fill == null && currentCell.left != null)
+            {
+                currentCell = currentCell.left;
+            }
+            if (currentCell.fill != null)
+            {
+                if (headValue.fill.value == currentCell.fill.value)
+                {
+                    headValue.fill.Double();
+                    headValue.fill.FillValueUpdate(headValue.fill.value);
+                    currentCell.fill.removeFromBoard();
+                    currentCell.fill = null;
+
+                }
+            }
+
+        }
+        if ((headValue.GetComponent(typeof(Cell2048)) as Cell2048).left.left != null)
+        {
+            SlideRight((headValue.GetComponent(typeof(Cell2048)) as Cell2048).left);
+        }
+    }
+
+    private void SlideDown(Cell2048 headValue)
+    {
+        //Fill2048 value = (head.GetComponent(typeof(Cell2048)) as Cell2048).fill; //The number of our current cell
+        //Cell2048 currentValue = head.GetComponent(typeof(Cell2048)) as Cell2048;
+        //Cell2048 headValue = head.GetComponent(typeof(Cell2048)) as Cell2048;
+        if (headValue.fill == null)
+        {
+            //Slides up values
+            Cell2048 currentCell = (headValue.GetComponent(typeof(Cell2048)) as Cell2048).up; //The cell below it
+            while (currentCell.fill == null && currentCell.up != null)
+            {
+                currentCell = currentCell.up;
+            }
+            if (currentCell != null && currentCell.fill != null)
+            {
+                Debug.Log("Attempting to change to " + currentCell.fill.value);
+                headValue.fill = makeCell(currentCell.fill.value, headValue.postionInArray);
+                headValue.fill.FillValueUpdate(currentCell.fill.value);
+                currentCell.fill.removeFromBoard();
+                currentCell.fill = null;
+            }
+        }
+
+        if (headValue.fill != null)
+        {
+            //Combines values
+            Cell2048 currentCell = (headValue.GetComponent(typeof(Cell2048)) as Cell2048).up; //The cell below it
+            while (currentCell.fill == null && currentCell.up != null)
+            {
+                currentCell = currentCell.up;
+            }
+            if (currentCell.fill != null)
+            {
+                if (headValue.fill.value == currentCell.fill.value)
+                {
+                    headValue.fill.Double();
+                    headValue.fill.FillValueUpdate(headValue.fill.value);
+                    currentCell.fill.removeFromBoard();
+                    currentCell.fill = null;
+
+                }
+            }
+
+        }
+        if ((headValue.GetComponent(typeof(Cell2048)) as Cell2048).up.up != null)
+        {
+            SlideDown((headValue.GetComponent(typeof(Cell2048)) as Cell2048).up);
+        }
+    }
+
+    private void SlideLeft(Cell2048 headValue)
+    {
+        //Fill2048 value = (head.GetComponent(typeof(Cell2048)) as Cell2048).fill; //The number of our current cell
+        //Cell2048 currentValue = head.GetComponent(typeof(Cell2048)) as Cell2048;
+        //Cell2048 headValue = head.GetComponent(typeof(Cell2048)) as Cell2048;
+        if (headValue.fill == null)
+        {
+            //Slides up values
+            Cell2048 currentCell = (headValue.GetComponent(typeof(Cell2048)) as Cell2048).right; //The cell below it
+            while (currentCell.fill == null && currentCell.right != null)
+            {
+                currentCell = currentCell.right;
+            }
+            if (currentCell != null && currentCell.fill != null)
+            {
+                Debug.Log("Attempting to change to " + currentCell.fill.value);
+                headValue.fill = makeCell(currentCell.fill.value, headValue.postionInArray);
+                headValue.fill.FillValueUpdate(currentCell.fill.value);
+                currentCell.fill.removeFromBoard();
+                currentCell.fill = null;
+            }
+        }
+
+        if (headValue.fill != null)
+        {
+            //Combines values
+            Cell2048 currentCell = (headValue.GetComponent(typeof(Cell2048)) as Cell2048).right; //The cell below it
+            while (currentCell.fill == null && currentCell.right != null)
+            {
+                currentCell = currentCell.right;
+            }
+            if (currentCell.fill != null)
+            {
+                if (headValue.fill.value == currentCell.fill.value)
+                {
+                    headValue.fill.Double();
+                    headValue.fill.FillValueUpdate(headValue.fill.value);
+                    currentCell.fill.removeFromBoard();
+                    currentCell.fill = null;
+
+                }
+            }
+
+        }
+        if ((headValue.GetComponent(typeof(Cell2048)) as Cell2048).right.right != null)
+        {
+            SlideLeft((headValue.GetComponent(typeof(Cell2048)) as Cell2048).right);
         }
     }
     public Fill2048 makeCell(int valueToFill, int positionInGrid)

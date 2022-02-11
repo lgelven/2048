@@ -42,7 +42,7 @@ public class GameController2048 : MonoBehaviour
             SlideUp(allCells[1].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in
             SlideUp(allCells[2].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in
             SlideUp(allCells[3].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in
-
+            
         }
         if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
         {
@@ -50,6 +50,7 @@ public class GameController2048 : MonoBehaviour
             SlideRight(allCells[7].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in
             SlideRight(allCells[11].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in
             SlideRight(allCells[15].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in 
+            
         }
         if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
         {
@@ -57,6 +58,7 @@ public class GameController2048 : MonoBehaviour
             SlideDown(allCells[13].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in
             SlideDown(allCells[14].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in
             SlideDown(allCells[15].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in 
+            
         }
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
@@ -64,6 +66,7 @@ public class GameController2048 : MonoBehaviour
             SlideLeft(allCells[4].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in
             SlideLeft(allCells[8].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in
             SlideLeft(allCells[12].GetComponent(typeof(Cell2048)) as Cell2048); //Pass the top left cell in 
+            
         }
         if (Input.GetKeyDown(KeyCode.Tab))
         {

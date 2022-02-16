@@ -86,7 +86,7 @@ public class GameController2048 : MonoBehaviour
         ArrayList cellCounter = new ArrayList();
         for (int i = 0; i<allCells.Length; i++)
         {
-            if(allCells[i] == null){
+            if (allCells[i].GetComponent<Cell2048>().fill == null){
                 //This if statement does not work. The cells are not null?
                 Debug.Log("blah");
                 cellCounter.Add(i);

@@ -11,6 +11,7 @@ public class GameController2048 : MonoBehaviour
     public static GameController2048 instance;
     public static int ticker;
     public static int movementTicker;
+    public static int counter; 
 
     
 
@@ -35,6 +36,7 @@ public class GameController2048 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if(Input.GetKeyDown(KeyCode.Space))
         {
             SpawnFill();
@@ -72,12 +74,60 @@ public class GameController2048 : MonoBehaviour
             
         }
         if (movementTicker != 0)
+        {
             SpawnFill();
+            endGame();
+            
+        }
         movementTicker = 0;
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             DebugSpawnFill();
         }
+    }
+    public void endGame()
+    {
+        counter = 0;
+        for (int i = 0; i < allCells.Length; i++)
+        {
+            if (allCells[i].GetComponent<Cell2048>().fill != null)
+            {
+                counter++;
+            }
+            if (counter == 16)
+            {
+                checkValues();
+                if(checkValues()==false)
+                {
+                    Debug.Log("GAME OVER");
+                }
+            }
+        }
+    }
+
+    public bool checkValues()
+    {
+        
+        for(int i=0; i<allCells.Length; i++)
+        {
+            if (allCells[i].GetComponent<Cell2048>().left != null && allCells[i].GetComponent<Cell2048>().fill.value ==allCells[i].GetComponent<Cell2048>().left.fill.value)
+            {
+                return true; 
+            }
+            if (allCells[i].GetComponent<Cell2048>().right != null && allCells[i].GetComponent<Cell2048>().fill.value ==allCells[i].GetComponent<Cell2048>().right.fill.value)
+            {
+                return true; 
+            }
+            if (allCells[i].GetComponent<Cell2048>().down != null && allCells[i].GetComponent<Cell2048>().fill.value == allCells[i].GetComponent<Cell2048>().down.fill.value)
+            {
+                return true; 
+            }
+            if (allCells[i].GetComponent<Cell2048>().up != null && allCells[i].GetComponent<Cell2048>().fill.value == allCells[i].GetComponent<Cell2048>().up.fill.value)
+            {
+                return true; 
+            }
+        }
+        return false; 
     }
 
     //Need to find a way to choose the values that are going to be able to spawn. Then use the random generator to pick one of those values. 
@@ -88,12 +138,12 @@ public class GameController2048 : MonoBehaviour
         {
             if (allCells[i].GetComponent<Cell2048>().fill == null){
                 //This if statement does not work. The cells are not null?
-                Debug.Log("blah");
+                //Debug.Log("blah");
                 cellCounter.Add(i);
             }
         }
         int spawnIndexOfArray = UnityEngine.Random.Range(0, cellCounter.Count);
-        Debug.Log(spawnIndexOfArray);
+        //Debug.Log(spawnIndexOfArray);
         int whichSpawn = (int)cellCounter[spawnIndexOfArray];
 
 

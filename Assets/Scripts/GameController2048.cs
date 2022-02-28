@@ -222,7 +222,8 @@ public class GameController2048 : MonoBehaviour
                 //Debug.Log("Attempting to change to " + currentCell.fill.value);
                 headValue.fill = makeCell(currentCell.fill.value, headValue.postionInArray);
                 headValue.fill.FillValueUpdate(currentCell.fill.value);
-                currentCell.fill.removeFromBoard();
+                currentCell.fill.removeFromBoard(headValue);
+                //currentCell.fill.removeFromBoard();
                 currentCell.fill = null;
                 movementTicker++;
             }

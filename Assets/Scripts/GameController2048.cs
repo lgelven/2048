@@ -11,7 +11,8 @@ public class GameController2048 : MonoBehaviour
     public static GameController2048 instance;
     public static int ticker;
     public static int movementTicker;
-    public static int counter; 
+    public static int counter;
+    public static int speed = 5;
 
     
 
@@ -220,11 +221,11 @@ public class GameController2048 : MonoBehaviour
             if (currentCell != null && currentCell.fill != null)
             {
                 //Debug.Log("Attempting to change to " + currentCell.fill.value);
-                headValue.fill = makeCell(currentCell.fill.value, headValue.postionInArray);
+                /*headValue.fill = makeCell(currentCell.fill.value, headValue.postionInArray);
                 headValue.fill.FillValueUpdate(currentCell.fill.value);
-                currentCell.fill.removeFromBoard(headValue);
-                //currentCell.fill.removeFromBoard();
-                currentCell.fill = null;
+                currentCell.fill = null;*/
+                removeFromBoard(currentCell,headValue);
+                //currentCell.fill = null;
                 movementTicker++;
             }
         }
@@ -420,5 +421,28 @@ public class GameController2048 : MonoBehaviour
         allCells[positionInGrid].GetComponent<Cell2048>().fill = tempFillComp;
         tempFillComp.FillValueUpdate(valueToFill);
         return tempFillComp;
+    }
+    public void removeFromBoard(Cell2048 currentCell, Cell2048 destinationCell)
+    {
+        StartCoroutine(MoveNumber(currentCell, destinationCell));
+    }
+    IEnumerator MoveNumber(Cell2048 currentCell, Cell2048 destinationCell)
+    {
+        while (Vector3.Distance(currentCell.transform.position, destinationCell.transform.position) > 0.0005f)
+        {
+            currentCell.transform.position = Vector3.Lerp(currentCell.transform.position, destinationCell.transform.position, speed * Time.deltaTime);
+            //currentCell.GetComponent<RectTransform>().position = Vector3.Lerp(currentCell.GetComponent<RectTransform>().position, destinationCell.GetComponent<RectTransform>().position, speed * Time.deltaTime);
+            //Both of the above lines have the same problem where it gets stuck somehwere in the middle.
+            yield return null;
+        }
+        Destroy(currentCell.transform.GetChild(0).gameObject);
+        yield return null;
+        destinationCell.fill = makeCell(currentCell.fill.value, destinationCell.postionInArray);
+        destinationCell.fill.FillValueUpdate(currentCell.fill.value);
+        currentCell.fill = null;
+        
+        //TODO: We need to make it so that the cells don't appear before the cell gets there.
+
+        
     }
 }

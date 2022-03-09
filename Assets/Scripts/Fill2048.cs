@@ -20,20 +20,7 @@ public class Fill2048 : MonoBehaviour
     {
         Destroy(transform.parent.GetChild(0).gameObject);
     }
-    public void removeFromBoard(Cell2048 destinationCell)
-    {    
-        StartCoroutine(MoveNumber(destinationCell));
-    }
-    IEnumerator MoveNumber(Cell2048 destinationCell)
-    {
-        while (Vector3.Distance(transform.position, destinationCell.fill.transform.position) > 0.05f)
-        {
-            transform.position = Vector3.Lerp(transform.position, destinationCell.fill.transform.position, speed * Time.deltaTime);
-            yield return null;
-        }
-        Destroy(transform.parent.GetChild(0).gameObject);
-        //TODO: We need to make it so that the cells don't appear before the cell gets there.
-    }
+    
     public void Start()
     {
         moveTowards = transform.localPosition;

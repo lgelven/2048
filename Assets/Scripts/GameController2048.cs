@@ -224,6 +224,7 @@ public class GameController2048 : MonoBehaviour
                 /*headValue.fill = makeCell(currentCell.fill.value, headValue.postionInArray);
                 headValue.fill.FillValueUpdate(currentCell.fill.value);
                 currentCell.fill = null;*/
+                
                 removeFromBoard(currentCell,headValue);
                 //currentCell.fill = null;
                 movementTicker++;
@@ -424,13 +425,23 @@ public class GameController2048 : MonoBehaviour
     }
     public void removeFromBoard(Cell2048 currentCell, Cell2048 destinationCell)
     {
-        StartCoroutine(MoveNumber(currentCell, destinationCell));
+        if(currentCell.toBeRemoved == false)
+        {
+            StartCoroutine(MoveNumber(currentCell, destinationCell));
+            currentCell.toBeRemoved = true; 
+        }
+
     }
     IEnumerator MoveNumber(Cell2048 currentCell, Cell2048 destinationCell)
     {
+        Debug.Log(currentCell.transform.position +","+ destinationCell.transform.position);
+        var duration = 1f;
+        var elapsedTime = 0f;
         while (Vector3.Distance(currentCell.transform.position, destinationCell.transform.position) > 0.0005f)
         {
-            currentCell.transform.position = Vector3.Lerp(currentCell.transform.position, destinationCell.transform.position, speed * Time.deltaTime);
+            
+            currentCell.transform.position = Vector3.Lerp(currentCell.transform.position, destinationCell.transform.position, elapsedTime/duration);
+            elapsedTime += Time.deltaTime;
             //currentCell.GetComponent<RectTransform>().position = Vector3.Lerp(currentCell.GetComponent<RectTransform>().position, destinationCell.GetComponent<RectTransform>().position, speed * Time.deltaTime);
             //Both of the above lines have the same problem where it gets stuck somehwere in the middle.
             yield return null;

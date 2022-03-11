@@ -11,6 +11,8 @@ public class Cell2048 : MonoBehaviour
     public int postionInArray;
     public string whocares = "blah";
 
+    public bool toBeRemoved = false;
+
 
     public Fill2048 fill;
 
